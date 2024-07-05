@@ -1,39 +1,28 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 import joblib
+from sklearn.preprocessing import StandardScaler
 
-# Load the model
 model = joblib.load('klasifikasi_obesitas_svm.pkl')
+scaler = StandardScaler()
 
-# Define the application
-def main():
-    st.title('Klasifikasi Obesitas')
+st.title('Klasifikasi Obesitas')
 
-    # Get user input
-    gender = st.selectbox('Jenis Kelamin', ['Pria', 'Wanita'])
-    height = st.number_input('Tinggi Badan (cm)', min_value=100, max_value=250)
-    weight = st.number_input('Berat Badan (kg)', min_value=20, max_value=200)
+gender = st.selectbox('Jenis Kelamin', ['Pria', 'Wanita'])
+height = st.number_input('Tinggi Badan (cm)', min_value=100, max_value=200)
+weight = st.number_input('Berat Badan (kg)', min_value=20, max_value=200)
 
-    # Encode the user input
-    gender_encoded = 0 if gender == 'Pria' else 1
-
-    # Create a DataFrame with the user input
-    user_input = pd.DataFrame({
-        'Gender': [gender_encoded],
-        'Height': [height],
-        'Weight': [weight]
-    })
-
-    # Scale the user input
-    scaler = StandardScaler()
-    scaler.fit(user_input)
-    user_input_scaled = scaler.transform(user_input)
-
-    # Predict the BMI category
-    bmi_category = model.predict(user_input_scaled)[0]
-
-    # Display the result
-    st.write('Kategori BMI:', bmi_category)
-
-if __name__ == '__main__':
-    main()
+if st.button('Klasifikasi'):
+  data = [[gender, height, weight]]
+  data_scaled = scaler.transform(data)
+  prediction = model.predict(data_scaled)[0]
+  index_labels = {
+    0: 'Extremely Weak',
+    1: 'Weak',
+    2: 'Normal',
+    3: 'Overweight',
+    4: 'Obese',
+    5: 'Extremely Obese'
+  }
+  st.write('Hasil Klasifikasi:', index_labels[prediction])
