@@ -11,7 +11,7 @@ def main():
     st.title('Klasifikasi Obesitas')
 
     # Get input from the user
-    gender = st.selectbox('Jenis Kelamin', ['Pria', 'Wanita'])
+    gender = st.selectbox('Jenis Kelamin', ['Male', 'Female'])
     height = st.number_input('Tinggi Badan (cm)', min_value=0.0, max_value=300.0)
     weight = st.number_input('Berat Badan (kg)', min_value=0.0, max_value=300.0)
 
