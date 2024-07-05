@@ -15,8 +15,10 @@ def main():
     height = st.number_input('Tinggi Badan (cm)', min_value=0.0, max_value=300.0)
     weight = st.number_input('Berat Badan (kg)', min_value=0.0, max_value=300.0)
 
-    # Preprocess the input
-    data = {'Gender': [gender], 'Height': [height], 'Weight': [weight]}
+  gender_num = 0 if gender == 'Female' else 1
+
+    # Preprocess the input data
+    data = [[height, weight, gender_num]]
     df = pd.DataFrame(data)
 
     # Make a prediction
